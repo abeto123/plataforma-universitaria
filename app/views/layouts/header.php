@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma Universitaria</title>
+    <title><?php echo APP_NAME; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../public/css/style.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -18,19 +17,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>home/index">Inicio</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?> . home/index">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>ideas/index">Ideas</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?> . ideas/index">Ideas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>foro/index">Foro</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?> . foro/index">Foro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>noticias/index">Noticias</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?> . noticias/index">Noticias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>proyectos/index">Proyectos</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?> . proyectos/index">Proyectos</a>
                     </li>
                 </ul>
                 
@@ -41,17 +40,17 @@
                                 <?php echo $_SESSION['user_name']; ?>
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="<?php echo BASE_URL; ?>perfil/index">Mi Perfil</a>
+                                <a class="dropdown-item" href="<?php echo BASE_URL; ?> . perfil/index">Mi Perfil</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/logout">Cerrar Sesión</a>
+                                <a class="dropdown-item" href="<?php echo BASE_URL; ?> . auth/logout">Cerrar Sesión</a>
                             </div>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>auth/login">Iniciar Sesión</a>
+                            <a class="nav-link" href="<?php echo BASE_URL; ?> . auth/login">Iniciar Sesión</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>/auth/register">Registrarse</a>
+                            <a class="nav-link" href="<?php echo BASE_URL; ?> . auth/register">Registrarse</a>
                         </li>
                     <?php endif; ?>
                 </ul>

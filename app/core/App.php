@@ -10,13 +10,13 @@ class App{
 
         if(isset($url[0])){
             $controllerName = ucfirst($url[0]) . 'Controller';
-            if(file_exists('../controller/' . $controllerName . '.php')){
+            if(file_exists('../app/controllers/' . $controllerName . '.php')){
                 $this->controller = $controllerName;
                 unset($url[0]);
             }
         }
 
-        require_once '../controllers/' . $this->controller . '.php';
+        require_once '../app/controllers/' . $this->controller . '.php';
         $this->controller = new $this->controller;
 
         if(isset($url[1])){
