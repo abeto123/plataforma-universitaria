@@ -17,19 +17,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?> . home/index">Inicio</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>home/">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?> . ideas/index">Ideas</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>ideas/">Ideas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?> . foro/index">Foro</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>foro/">Foro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?> . noticias/index">Noticias</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>noticias/">Noticias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?> . proyectos/index">Proyectos</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>proyectos/">Proyectos</a>
                     </li>
                 </ul>
                 
@@ -40,17 +40,17 @@
                                 <?php echo $_SESSION['user_name']; ?>
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="<?php echo BASE_URL; ?> . perfil/index">Mi Perfil</a>
+                                <a class="dropdown-item" href="<?php echo BASE_URL; ?>perfil/index">Mi Perfil</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?php echo BASE_URL; ?> . auth/logout">Cerrar Sesión</a>
+                                <a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/logout">Cerrar Sesión</a>
                             </div>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?> . auth/login">Iniciar Sesión</a>
+                            <a class="nav-link" href="<?php echo BASE_URL; ?>auth/login">Iniciar Sesión</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?> . auth/register">Registrarse</a>
+                            <a class="nav-link" href="<?php echo BASE_URL; ?>auth/register">Registrarse</a>
                         </li>
                     <?php endif; ?>
                 </ul>
