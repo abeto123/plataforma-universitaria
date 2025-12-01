@@ -156,17 +156,36 @@
             <!-- TARJETA DE ACCIÓN -->
             <div class="card" style="text-align: center;">
                 <h3>¿Te interesa?</h3>
-                <p>Únete al equipo para desarrollar este proyecto.</p>
+
+                <?php if($data['idea']->estado == 'abierta'): ?>
+                    <p>Únete al equipo para desarrollar este proyecto.</p>
+                <?php else: ?>
+                    <p>El equipo de trabajo ya está cerrado.</p>
+                <?php endif; ?>
 
                 <?php if(isset($_SESSION['usuario_id'])): ?>
+                    
                     <?php if($data['idea']->usuario_creador_id == $_SESSION['usuario_id']): ?>
-                        <button class="btn" style="background: #ccc; cursor: not-allowed;" disabled>Eres el creador</button>
+                        <!-- CASO 1: ERES EL DUEÑO -->
+                        <button class="btn" style="background: #ccc; cursor: not-allowed; width: 100%;" disabled>Eres el creador</button>
+                    
                     <?php elseif($data['es_miembro']): ?>
-                        <button class="btn" style="background: #28a745; color: white; cursor: default;">Ya eres miembro ✔</button>
+                        <!-- CASO 2: YA ERES MIEMBRO -->
+                        <button class="btn" style="background: #28a745; color: white; cursor: default; width: 100%;">Solicitud enviada ✔</button>
+                    
+                    <?php elseif($data['idea']->estado != 'abierta'): ?>
+                        <!-- CASO 3: LA IDEA YA NO ADMITE GENTE (En desarrollo o Cerrada) -->
+                        <button class="btn" style="background: #e9ecef; color: #666; cursor: not-allowed; width: 100%;" disabled>
+                            🔒 Convocatoria Cerrada
+                        </button>
+
                     <?php else: ?>
+                        <!-- CASO 4: ESTÁ ABIERTA Y PUEDES UNIRTE -->
                         <a href="<?= BASE_URL ?>idea/unirse/<?= $data['idea']->id_idea ?>" class="btn btn-primary btn-block">Unirme al Equipo</a>
                     <?php endif; ?>
+
                 <?php else: ?>
+                    <!-- NO LOGUEADO -->
                     <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary btn-block">Inicia Sesión para Unirte</a>
                 <?php endif; ?>
             </div>
