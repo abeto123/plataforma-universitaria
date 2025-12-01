@@ -1,7 +1,6 @@
 drop database if exists plataforma_universitaria;
 create database plataforma_universitaria character set utf8mb4 collate utf8mb4_unicode_ci;
 use plataforma_universitaria;
-
 /*
 proposito: almacena las diferentes carreras universitarias.
 esto evita la redundancia y errores de tipeo al registrar carreras,
@@ -39,6 +38,8 @@ create table ideas (
     titulo varchar(255) not null,
     descripcion varchar(500) not null,
     estado enum('abierta', 'en_desarrollo', 'cerrada') not null default 'abierta',
+    archivo_adjunto varchar(255) null,
+    etiquetas varchar(255) null,
     usuario_creador_id int not null,
     fecha_creacion timestamp default current_timestamp,
     constraint fk_ideas_usuarios foreign key (usuario_creador_id) references usuarios(id_usuario) on delete cascade
@@ -51,11 +52,38 @@ resuelve la relacion muchos-a-muchos entre usuarios e ideas.
 create table idea_miembros (
     idea_id int not null,
     usuario_id int not null,
+    estado_solicitud ENUM('pendiente', 'aceptado', 'rechazado') DEFAULT 'pendiente',
+    mensaje_solicitud VARCHAR(255) NULL,
     fecha_union timestamp default current_timestamp,
     primary key (idea_id, usuario_id),
     constraint fk_idea_miembros_ideas foreign key (idea_id) references ideas(id_idea) on delete cascade,
     constraint fk_idea_miembros_usuarios foreign key (usuario_id) references usuarios(id_usuario) on delete cascade
 );
+
+/* 
+Proposito: Evitar que un usuario de like dos veces a la misma idea 
+y contar cuántos apoyos tiene.
+*/
+CREATE TABLE idea_votos (
+    idea_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    fecha_voto TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (idea_id, usuario_id), -- Clave compuesta para evitar duplicados
+    CONSTRAINT fk_votos_ideas FOREIGN KEY (idea_id) REFERENCES ideas(id_idea) ON DELETE CASCADE,
+    CONSTRAINT fk_votos_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+);
+
+CREATE TABLE idea_comentarios (
+    id_comentario INT PRIMARY KEY AUTO_INCREMENT,
+    idea_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    comentario TEXT NOT NULL,
+    fecha_comentario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_comentarios_ideas FOREIGN KEY (idea_id) REFERENCES ideas(id_idea) ON DELETE CASCADE,
+    CONSTRAINT fk_comentarios_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+);
+
+
 
 /*
 proposito: almacena los proyectos interdisciplinarios que nacen de las ideas o se crean directamente.
@@ -162,7 +190,7 @@ create table notificaciones (
 
 
 INSERT INTO carreras (nombre) VALUES
-('Ingenieria de Sistemas e Informatica'),
+('Ingenieria en Informatica y Sistemas'),
 ('Derecho y Ciencias Politicas'),
 ('Medicina Humana'),
 ('Arquitectura'),
@@ -172,10 +200,10 @@ INSERT INTO carreras (nombre) VALUES
 
 
 INSERT INTO usuarios (nombre_completo, correo_electronico, password_hash, carrera_id, rol, foto_perfil) VALUES
-('Alberto Barrios Rivera', 'abarriosriv@unjbg.edu.pe', '12345', 1, 'estudiante', 'default.jpg'),
-('Breyan Huisa Condori', 'huisa@unjbg.edu.pe', '12345', 1, 'estudiante', 'default.jpg'),
-('Krishna Chiclaya Centeno', 'chiclaya@unjbg.edu.pe', '12345', 1, 'estudiante', 'default.jpg'),
-('Alberto', 'barriosriv@unjbg.edu.pe', '12345', 1, 'administrador', 'default.jpg');
+('Alberto Barrios Rivera', 'abarriosriv@unjbg.edu.pe', '$2y$10$uhmXG0YDHW2kedlUJ36iR.tIj.t0ufEQOSsxgNJrtMGG63AN60EnG', 1, 'estudiante', 'default.jpg'),
+('Breyan Huisa Condori', 'huisa@unjbg.edu.pe', '$2y$10$uhmXG0YDHW2kedlUJ36iR.tIj.t0ufEQOSsxgNJrtMGG63AN60EnG', 1, 'estudiante', 'default.jpg'),
+('Krishna Chiclaya Centeno', 'chiclaya@unjbg.edu.pe', '$2y$10$uhmXG0YDHW2kedlUJ36iR.tIj.t0ufEQOSsxgNJrtMGG63AN60EnG', 1, 'estudiante', 'default.jpg'),
+('Alberto', 'albertix91@gmail.com', '$2y$10$uhmXG0YDHW2kedlUJ36iR.tIj.t0ufEQOSsxgNJrtMGG63AN60EnG', 1, 'administrador', 'default.jpg');
 
 
 INSERT INTO ideas (titulo, descripcion, estado, usuario_creador_id) VALUES
@@ -210,7 +238,13 @@ INSERT INTO foro_categorias (nombre) VALUES
 ('Derecho General'),
 ('Metodologia de Investigacion'),
 ('Fisica'),
-('Ingenieria Web');
+('Ingenieria Web'),
+('Programación y Algoritmos'), 
+('Base de Datos'), 
+('Redes'), 
+('Investigación y Tesis'), 
+('Trámites Universitarios'), 
+('General / Otros');
 
 
 INSERT INTO foro_publicaciones (titulo, contenido, usuario_id, categoria_id) VALUES
