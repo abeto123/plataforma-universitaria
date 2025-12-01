@@ -1,76 +1,82 @@
-<?php include '../app/views/layouts/header.php'; ?>
+<?php require_once APPROOT . '/views/layouts/header.php'; ?>
 
-<div class="jumbotron">
-    <h1 class="display-4">Bienvenido a la Plataforma Universitaria</h1>
-    <p class="lead">Conecta ideas, colabora en proyectos y construye el futuro de la universidad.</p>
-    <?php if (!isset($_SESSION['user_id'])): ?>
-        <a class="btn btn-primary btn-lg" href="<?php echo BASE_URL; ?>auth/register" role="button">Únete Ahora</a>
+<!-- 1. BANNER DE BIENVENIDA (HERO) -->
+<div class="hero-banner" style="background-color: rgba(176, 0, 0, 1);">
+    <h1>Bienvenido a la Plataforma Universitaria</h1>
+    <p>Conecta ideas, colabora en proyectos y construye el futuro de la universidad junto a estudiantes de la UNJBG.</p>
+    
+    <?php if(!isset($_SESSION['usuario_id'])): ?>
+        <a href="<?= BASE_URL ?>auth/registro" class="btn-cta">Únete Ahora</a>
+    <?php else: ?>
+        <a href="<?= BASE_URL ?>idea/crear" class="btn-cta">Publicar Idea</a>
     <?php endif; ?>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h5>Últimas Ideas</h5>
-            </div>
-            <div class="card-body">
-                <?php if (!empty($data['ideas'])): ?>
-                    <?php foreach ($data['ideas'] as $idea): ?>
-                        <div class="mb-3">
-                            <h6><?php echo htmlspecialchars($idea['titulo']); ?></h6>
-                            <small class="text-muted">Por: <?php echo htmlspecialchars($idea['creador_nombre']); ?></small>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No hay ideas disponibles.</p>
-                <?php endif; ?>
-                <a href="<?php echo BASE_URL; ?>ideas/index" class="btn btn-sm btn-outline-primary">Ver todas</a>
-            </div>
-        </div>
-    </div>
+<!-- 2. GRID DE 3 COLUMNAS -->
+<div class="dashboard-grid">
     
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h5>Últimas Noticias</h5>
-            </div>
-            <div class="card-body">
-                <?php if (!empty($data['noticias'])): ?>
-                    <?php foreach ($data['noticias'] as $noticia): ?>
-                        <div class="mb-3">
-                            <h6><?php echo htmlspecialchars($noticia['titulo']); ?></h6>
-                            <small class="text-muted"><?php echo date('d/m/Y', strtotime($noticia['fecha_publicacion'])); ?></small>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No hay noticias disponibles.</p>
-                <?php endif; ?>
-                <a href="/plataforma_universitaria/noticias" class="btn btn-sm btn-outline-primary">Ver todas</a>
-            </div>
+    <!-- TARJETA 1: ÚLTIMAS IDEAS -->
+    <div class="dashboard-card">
+        <div>
+            <h3>Últimas Ideas</h3>
+            <?php foreach($data['ideas'] as $idea): ?>
+                <div class="list-item">
+                    <!-- Título clickeable -->
+                    <h4><a href="#"><?= $idea->titulo ?></a></h4>
+                    <p>Por: <?= $idea->autor ?></p>
+                </div>
+            <?php endforeach; ?>
+            
+            <?php if(empty($data['ideas'])): ?>
+                <p style="color:#999; font-style:italic;">No hay ideas registradas.</p>
+            <?php endif; ?>
         </div>
+        
+        <a href="<?= BASE_URL ?>idea" class="btn-outline">Ver todas</a>
     </div>
-    
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h5>Proyectos Activos</h5>
-            </div>
-            <div class="card-body">
-                <?php if (!empty($data['proyectos'])): ?>
-                    <?php foreach ($data['proyectos'] as $proyecto): ?>
-                        <div class="mb-3">
-                            <h6><?php echo htmlspecialchars($proyecto['nombre']); ?></h6>
-                            <small class="text-muted">Por: <?php echo htmlspecialchars($proyecto['creador_nombre']); ?></small>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No hay proyectos activos.</p>
-                <?php endif; ?>
-                <a href="/plataforma_universitaria/proyectos" class="btn btn-sm btn-outline-primary">Ver todos</a>
-            </div>
+
+    <!-- TARJETA 2: ÚLTIMAS NOTICIAS -->
+    <div class="dashboard-card">
+        <div>
+            <h3>Últimas Noticias</h3>
+            <?php foreach($data['noticias'] as $noticia): ?>
+                <div class="list-item">
+                    <h4><?= $noticia->titulo ?></h4>
+                    <p>
+                        <?= date('d/m/Y', strtotime($noticia->fecha_publicacion)) ?>
+                        <br>
+                        <?= substr($noticia->contenido, 0, 60) ?>...
+                    </p>
+                </div>
+            <?php endforeach; ?>
+            
+            <?php if(empty($data['noticias'])): ?>
+                <p style="color:#999; font-style:italic;">Sin noticias recientes.</p>
+            <?php endif; ?>
         </div>
+
+        <a href="<?= BASE_URL ?>noticia" class="btn-outline">Ver todas</a>
     </div>
+
+    <!-- TARJETA 3: PROYECTOS ACTIVOS -->
+    <div class="dashboard-card">
+        <div>
+            <h3>Proyectos Activos</h3>
+            <?php foreach($data['proyectos'] as $proyecto): ?>
+                <div class="list-item">
+                    <h4><?= $proyecto->nombre ?></h4>
+                    <p>Líder: <?= $proyecto->responsable ?></p>
+                </div>
+            <?php endforeach; ?>
+
+            <?php if(empty($data['proyectos'])): ?>
+                <p style="color:#999; font-style:italic;">No hay proyectos activos.</p>
+            <?php endif; ?>
+        </div>
+
+        <a href="<?= BASE_URL ?>proyecto" class="btn-outline">Ver todos</a>
+    </div>
+
 </div>
 
-<?php include '../app/views/layouts/footer.php'; ?>
+<?php require_once APPROOT . '/views/layouts/footer.php'; ?>

@@ -1,0 +1,187 @@
+/* =========================================
+   1. VARIABLES Y GENERALES
+   ========================================= */
+:root {
+    --primary: #b30000;    /* Rojo institucional */
+    --secondary: #1a1a1a;  /* Negro suave */
+    --light: #f4f4f4;      /* Fondo gris muy claro */
+    --white: #ffffff;
+    --gray: #666;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+body { 
+    background-color: var(--light); 
+    color: var(--secondary); 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Para que el footer siempre baje */
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 0 15px; }
+
+/* =========================================
+   2. NAVBAR (Menú Superior)
+   ========================================= */
+.navbar { 
+    background-color: var(--secondary); 
+    color: var(--white); 
+    padding: 1rem 0; 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+}
+
+.navbar .container { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.logo { font-weight: bold; font-size: 1.2rem; }
+
+.nav-links { display: flex; gap: 20px; }
+.nav-links a:hover { color: #ffcccc; }
+
+/* Botón especial del menú */
+.btn-login { 
+    background: var(--primary); 
+    padding: 5px 15px; 
+    border-radius: 4px; 
+}
+
+/* =========================================
+   3. HERO (Banner de Bienvenida)
+   ========================================= */
+.hero-banner {
+    /* Degradado morado/azul */
+    background: rgb(146, 0, 0);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-banner h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 300; }
+.hero-banner p { font-size: 1.1rem; margin-bottom: 25px; opacity: 0.9; max-width: 700px; }
+
+/* Botón del Banner */
+.btn-cta {
+    background-color: #007bff; /* Azul brillante */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.btn-cta:hover { background-color: #0056b3; }
+
+/* =========================================
+   4. DASHBOARD (Tarjetas del Home)
+   ========================================= */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive automático */
+    gap: 25px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dashboard-card h3 { margin-bottom: 15px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+/* Items dentro de las tarjetas */
+.list-item { margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+.list-item:last-child { border: none; }
+.list-item h4 { font-size: 1rem; color: #444; margin-bottom: 3px; }
+.list-item p { font-size: 0.85rem; color: #888; }
+
+/* Botón "Ver todas" */
+.btn-outline {
+    display: inline-block;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 8px 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+.btn-outline:hover { background-color: #007bff; color: white; }
+
+/* =========================================
+   5. COMPONENTES GENERALES (Formularios, Botones)
+   ========================================= */
+.btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+.btn-primary { background-color: var(--primary); color: white; }
+
+.card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; border-left: 5px solid var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.badge { background: #eee; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
+
+.form-box { background: white; padding: 30px; border-radius: 8px; max-width: 500px; margin: 30px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.form-group { margin-bottom: 15px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+
+/* =========================================
+   6. FOOTER (Pie de Página)
+   ========================================= */
+.main-footer {
+    background-color: var(--secondary);
+    color: #ccc;
+    padding: 40px 0 20px 0;
+    margin-top: auto; /* Empuja el footer al fondo si hay poco contenido */
+    border-top: 5px solid var(--primary);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-col h3 { color: white; margin-bottom: 15px; font-size: 1.1rem; }
+.footer-col ul li { margin-bottom: 8px; }
+.footer-col a:hover { color: var(--primary); padding-left: 5px; transition: 0.3s; }
+
+.footer-copyright { border-top: 1px solid #333; text-align: center; padding-top: 20px; font-size: 0.85rem; }
+
+/* =========================================
+   7. RESPONSIVE (Móvil)
+   ========================================= */
+@media (max-width: 768px) {
+    .navbar .container { flex-direction: column; gap: 10px; }
+    .nav-links { flex-wrap: wrap; justify-content: center; }
+    .hero-banner { padding: 40px 20px; text-align: center; }
+    .footer-grid { text-align: center; }
+}
+
+
+.progress-container {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin: 15px 0;
+    height: 10px;
+    width: 100%;
+}
+.progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s;
+}

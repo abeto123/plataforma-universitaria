@@ -1,35 +1,20 @@
 <?php
-
-require_once '../app/core/Controller.php';
-
 class HomeController extends Controller {
-    private $noticiaModel;
-    private $ideaModel;
-    private $proyectoModel;
-
-    public function __construct() {
-        $this->noticiaModel = $this->model('Noticia');
-        $this->ideaModel = $this->model('Idea');
-        $this->proyectoModel = $this->model('Proyecto');
-    }
-
+    
     public function index() {
+        // 1. Instanciar modelos
+        $ideaModel = $this->model('Idea');
+        $noticiaModel = $this->model('Noticia');
+        $proyectoModel = $this->model('Proyecto');
 
-        $noticias = $this->noticiaModel->getLatest(3);
-        
-        $ideas = $this->ideaModel->getLatest(3);
-        
-        $proyectos = $this->proyectoModel->getActive(3);
-
-        $data = [
-            'ideas' => $ideas,
-            'noticias' => $noticias,
-            'proyectos' => $proyectos
+        // 2. Obtener datos (Los 3 más recientes de cada uno)
+        $datos = [
+            'ideas' => $ideaModel->obtenerRecientes(3),
+            'noticias' => $noticiaModel->obtenerRecientes(3),
+            'proyectos' => $proyectoModel->obtenerRecientes(3)
         ];
 
-        $this->view('home/index', $data);
-        
+        // 3. Cargar vista
+        $this->view('home/index', $datos);
     }
 }
-
-?>

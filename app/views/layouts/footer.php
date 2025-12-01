@@ -1,12 +1,46 @@
-    </div>
+</div> <!-- Cierre del container principal -->
     
-    <footer class="bg-dark text-white text-center py-3 mt-5">
+    <footer class="main-footer">
         <div class="container">
-            <p>&copy; 2025 Plataforma Universitaria de Ideas y Proyectos - UNJBG</p>
+            <div class="footer-grid">
+                
+                <!-- Columna 1: Sobre la Plataforma -->
+                <div class="footer-col">
+                    <h3>PUIP - UNJBG</h3>
+                    <p>
+                        Plataforma Universitaria de Ideas y Proyectos. 
+                        Un espacio para fomentar la innovación y la colaboración 
+                        entre estudiantes y docentes de la Facultad de Ingeniería.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Enlaces Rápidos -->
+                <div class="footer-col">
+                    <h3>Navegación</h3>
+                    <ul>
+                        <li><a href="<?= BASE_URL ?>home">Inicio</a></li>
+                        <li><a href="<?= BASE_URL ?>idea">Banco de Ideas</a></li>
+                        <li><a href="<?= BASE_URL ?>proyecto">Proyectos</a></li>
+                        <li><a href="<?= BASE_URL ?>noticia">Noticias</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Información Académica -->
+                <div class="footer-col">
+                    <h3>Contacto Académico</h3>
+                    <p><strong>Universidad Nacional Jorge Basadre Grohmann</strong></p>
+                    <p>Escuela de Ingeniería en Informática y Sistemas (ESIS)</p>
+                    <p>Curso: Ingeniería Web y Aplicaciones Móviles</p>
+                    <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.7;">Tacna, Perú - 2025</p>
+                </div>
+
+            </div>
+
+            <div class="footer-copyright">
+                <p>&copy; 2025 Equipo de Desarrollo - Barrios, Huisa.</p>
+            </div>
         </div>
     </footer>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

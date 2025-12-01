@@ -1,13 +1,21 @@
 <?php
-
-class Controller{
+class Controller {
+    
+    // Cargar Modelo
     protected function model($model){
-        require_once '../app/models/' . $model . '.php';
+        // Usa APPROOT para encontrar el archivo sin errores
+        require_once APPROOT . '/models/' . $model . '.php';
         return new $model();
     }
 
+    // Cargar Vista
     protected function view($view, $data = []){
-        require_once '../app/views/' . $view . '.php';
+        // Verifica si el archivo existe antes de cargarlo
+        if(file_exists(APPROOT . '/views/' . $view . '.php')){
+            require_once APPROOT . '/views/' . $view . '.php';
+        } else {
+            die("La vista no existe: " . APPROOT . '/views/' . $view . '.php');
+        }
     }
 
     protected function redirect($url){
@@ -25,5 +33,4 @@ class Controller{
         return isset($_SESSION['usuario_id']);
     }
 }
-
 ?>
