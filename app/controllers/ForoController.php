@@ -42,6 +42,33 @@ class ForoController extends Controller {
         $this->view('foro/crear', ['categorias' => $categorias]);
     }
 
+    public function editar($id){
+        $this->requireAuth();
+        $foroModel = $this->model('Foro');
+        $pregunta = $foroModel->obtenerPreguntaPorId($id);
+
+        if($pregunta->usuario_id != $_SESSION['usuario_id']){
+            $this->redirect('foro');
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $foroModel->actualizarPregunta($id, $_POST['titulo'], $_POST['contenido']);
+            $this->redirect('foro/detalle/' . $id);
+        }
+        $this->view('foro/editar', ['pregunta' => $pregunta]);
+    }
+
+    public function eliminar($id){
+        $this->requireAuth();
+        $foroModel = $this->model('Foro');
+        $pregunta = $foroModel->obtenerPreguntaPorId($id);
+
+        if($pregunta->usuario_id == $_SESSION['usuario_id']){
+            $foroModel->eliminarPregunta($id);
+        }
+        $this->redirect('foro');
+    }
+
     public function detalle($id){
         $foroModel = $this->model('Foro');
         

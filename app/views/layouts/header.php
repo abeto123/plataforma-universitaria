@@ -19,6 +19,28 @@
 
                 <!-- Lógica de Sesión -->
                 <?php if(isset($_SESSION['usuario_id'])): ?>
+                    <?php 
+                    // TRUCO: Consultar notificaciones directamente en la vista para el Header
+                    // Solo si está logueado
+                    $num_notificaciones = 0;
+                    if(isset($_SESSION['usuario_id'])){
+                        require_once '../app/models/Notificacion.php';
+                        $notiTemp = new Notificacion();
+                        $num_notificaciones = $notiTemp->contarNoLeidas($_SESSION['usuario_id']);
+                    }
+                ?>
+
+                <!-- CAMPANA DE NOTIFICACIONES -->
+                <?php if(isset($_SESSION['usuario_id'])): ?>
+                    <li style="position: relative;">
+                        <a href="<?= BASE_URL ?>perfil" style="font-size: 1.2rem;">🔔</a>
+                        <?php if($num_notificaciones > 0): ?>
+                            <span style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; font-weight: bold;">
+                                <?= $num_notificaciones ?>
+                            </span>
+                        <?php endif; ?>
+                    </li>
+                <?php endif; ?>
                     <li><a href="<?= BASE_URL ?>perfil">Mi Perfil</a></li>
                     <li><a href="<?= BASE_URL ?>auth/logout" class="btn-login">Salir</a></li>
                 <?php else: ?>

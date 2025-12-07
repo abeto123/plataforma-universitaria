@@ -6,6 +6,20 @@ class Foro {
         $this->db = Database::connect();
     }
 
+    public function actualizarPregunta($id, $titulo, $contenido){
+        $sql = "UPDATE foro_publicaciones SET titulo = :tit, contenido = :cont WHERE id_foro_publicacion = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':tit' => $titulo, ':cont' => $contenido, ':id' => $id]);
+        return true;
+    }
+
+    public function eliminarPregunta($id){
+        $sql = "DELETE FROM foro_publicaciones WHERE id_foro_publicacion = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return true;
+    }
+
     // 1. Obtener todas las categorías
     public function obtenerCategorias(){
         $stmt = $this->db->query("SELECT * FROM foro_categorias ORDER BY nombre ASC");
@@ -14,7 +28,7 @@ class Foro {
 
     // 2. Listar preguntas (Con filtro opcional)
     public function obtenerPreguntas($categoria_id = null, $busqueda = null){
-        $sql = "SELECT p.*, u.nombre_completo as autor, u.foto_perfil, c.nombre as categoria,
+        $sql = "SELECT p.*, u.nombre_completo as autor, c.nombre as categoria,
                 (SELECT COUNT(*) FROM foro_respuestas r WHERE r.publicacion_id = p.id_foro_publicacion) as num_respuestas
                 FROM foro_publicaciones p
                 JOIN usuarios u ON p.usuario_id = u.id_usuario

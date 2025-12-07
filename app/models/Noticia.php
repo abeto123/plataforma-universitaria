@@ -11,6 +11,20 @@ class Noticia {
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function actualizar($id, $titulo, $contenido, $tipo){
+        $sql = "UPDATE noticias SET titulo = :tit, contenido = :cont, tipo = :tip WHERE id_noticia = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':tit'=>$titulo, ':cont'=>$contenido, ':tip'=>$tipo, ':id'=>$id]);
+        return true;
+    }
+
+    public function eliminar($id){
+        $sql = "DELETE FROM noticias WHERE id_noticia = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return true;
+    }
+
         // 1. Listar noticias (con filtro opcional por tipo)
     public function obtenerTodas($tipo = null){
         $sql = "SELECT n.*, u.nombre_completo as autor

@@ -46,6 +46,34 @@ class ProyectoController extends Controller {
         $this->view('proyectos/crear', ['carreras' => $carreras]);
     }
 
+    public function editar($id){
+        $this->requireAuth();
+        $proyectoModel = $this->model('Proyecto');
+        $proyecto = $proyectoModel->obtenerPorId($id);
+
+        if($proyecto->usuario_creador_id != $_SESSION['usuario_id']){
+            $this->redirect('proyecto'); // Seguridad
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $proyectoModel->actualizar($id, $_POST['nombre'], $_POST['descripcion']);
+            $this->redirect('proyecto/detalle/' . $id);
+        }
+
+        $this->view('proyectos/editar', ['proyecto' => $proyecto]);
+    }
+
+    public function eliminar($id){
+        $this->requireAuth();
+        $proyectoModel = $this->model('Proyecto');
+        $proyecto = $proyectoModel->obtenerPorId($id);
+
+        if($proyecto->usuario_creador_id == $_SESSION['usuario_id']){
+            $proyectoModel->eliminar($id);
+        }
+        $this->redirect('proyecto');
+    }
+
     public function detalle($id){
         $proyectoModel = $this->model('Proyecto');
         

@@ -8,6 +8,20 @@ class Proyecto {
         $this->db = Database::connect();
     }
 
+    public function actualizar($id, $nombre, $descripcion){
+        $sql = "UPDATE proyectos SET nombre = :nom, descripcion = :desc WHERE id_proyecto = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':nom' => $nombre, ':desc' => $descripcion, ':id' => $id]);
+        return true;
+    }
+
+    public function eliminar($id){
+        $sql = "DELETE FROM proyectos WHERE id_proyecto = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return true;
+    }
+
     // 1. Listar proyectos (con filtros opcionales)
     public function obtenerTodos($estado = null, $carrera_id = null){
         $sql = "SELECT p.*, u.nombre_completo as responsable 
@@ -35,11 +49,14 @@ class Proyecto {
     }
 
     // 2. Obtener un proyecto por ID
+    // 2. Obtener un proyecto por ID (CORREGIDO)
     public function obtenerPorId($id){
-        $sql = "SELECT p.*, u.nombre_completo as responsable, u.foto_perfil
+        // Agregamos: u.nombre_completo as responsable
+        $sql = "SELECT p.*, u.nombre_completo as responsable
                 FROM proyectos p
                 JOIN usuarios u ON p.usuario_creador_id = u.id_usuario
                 WHERE p.id_proyecto = :id";
+                
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();

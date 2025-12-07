@@ -91,6 +91,15 @@
                 
                 <div class="card" style="border-left: 5px solid #ffc107; background: #fffbe6;">
                     <h3 style="color: #bfa900;">👑 Panel de Gestión</h3>
+
+                    <!-- BOTONES DE EDICIÓN / ELIMINACIÓN -->
+                    <div style="margin-top: 20px; text-align: right; border-top: 1px solid #e0d8a0; padding-top: 10px;">
+                        <a href="<?= BASE_URL ?>idea/editar/<?= $data['idea']->id_idea ?>" style="color: #d35400; font-size: 0.9rem; margin-right: 15px;">✎ Editar Texto</a>
+                        
+                        <form action="<?= BASE_URL ?>idea/eliminar/<?= $data['idea']->id_idea ?>" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de borrar esta idea permanentemente?');">
+                            <button type="submit" style="background:none; border:none; color:red; cursor:pointer; font-size:0.9rem; text-decoration:underline;">🗑 Eliminar Idea</button>
+                        </form>
+                    </div>
                     
                     <!-- 1. CAMBIAR ESTADO DE LA IDEA -->
                     <form action="<?= BASE_URL ?>idea/cambiar_estado/<?= $data['idea']->id_idea ?>" method="POST" style="margin-bottom: 20px;">
@@ -99,7 +108,7 @@
                             <select name="estado" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; flex-grow: 1;">
                                 <option value="abierta" <?= $data['idea']->estado == 'abierta' ? 'selected' : '' ?>>Abierta</option>
                                 <option value="en_desarrollo" <?= $data['idea']->estado == 'en_desarrollo' ? 'selected' : '' ?>>En Desarrollo</option>
-                                <option value="cerrada" <?= $data['idea']->estado == 'cerrada' ? 'selected' : '' ?>>Culminada</option>
+                                <!--<option value="cerrada" <?= $data['idea']->estado == 'cerrada' ? 'selected' : '' ?>>Culminada</option> -->
                             </select>
                             <button type="submit" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">Guardar</button>
                         </div>
@@ -193,14 +202,39 @@
             <!-- LISTA DE MIEMBROS -->
             <div class="card">
                 <h3>Equipo de Trabajo</h3>
+                
                 <?php if(empty($data['miembros'])): ?>
                     <p style="color: #999;">Aún no hay miembros unidos.</p>
                 <?php else: ?>
                     <ul style="list-style: none;">
                         <?php foreach($data['miembros'] as $miembro): ?>
-                            <li style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-                                <strong><?= $miembro->nombre_completo ?></strong><br>
-                                <small style="color: #666;"><?= $miembro->carrera ?></small>
+                            <li style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                                
+                                <!-- Datos del Miembro -->
+                                <div>
+                                    <strong><?= $miembro->nombre_completo ?></strong>
+                                    <div style="font-size: 0.85rem; color: #666;"><?= $miembro->carrera ?></div>
+                                </div>
+
+                                <!-- LÓGICA DE PRIVACIDAD: -->
+                                <!-- Solo mostrar teléfono si YO soy el creador de la idea -->
+                                <?php if(isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $data['idea']->usuario_creador_id): ?>
+                                    
+                                    <div style="margin-top: 5px;">
+                                        <?php if(!empty($miembro->telefono)): ?>
+                                            <a href="https://wa.me/51<?= $miembro->telefono ?>" target="_blank" 
+                                            style="display: inline-flex; align-items: center; gap: 5px; color: #25d366; font-weight: bold; font-size: 0.9rem; text-decoration: none;">
+                                            <!-- Icono simple de WhatsApp -->
+                                            <span style="font-size: 1.2rem;">✆</span> Contactar (<?= $miembro->telefono ?>)
+                                            </a>
+                                        <?php else: ?>
+                                            <small style="color: #999;">(Sin teléfono registrado)</small>
+                                        <?php endif; ?>
+                                    </div>
+
+                                <?php endif; ?>
+                                <!-- Fin Lógica Privacidad -->
+
                             </li>
                         <?php endforeach; ?>
                     </ul>

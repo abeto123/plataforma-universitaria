@@ -15,6 +15,12 @@
         <p style="font-size:1.1rem; line-height:1.6; color:#333;">
             <?= nl2br($data['pregunta']->contenido) ?>
         </p>
+        <?php if(isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $data['pregunta']->usuario_id): ?>
+        <div style="margin-top:10px; font-size:0.9rem;">
+            <a href="<?= BASE_URL ?>foro/editar/<?= $data['pregunta']->id_foro_publicacion ?>">Editar</a> | 
+            <a href="<?= BASE_URL ?>foro/eliminar/<?= $data['pregunta']->id_foro_publicacion ?>" onclick="return confirm('¿Borrar pregunta?');" style="color:red;">Eliminar</a>
+        </div>
+    <?php endif; ?>
     </div>
 
     <h3 style="margin:30px 0 15px 0;">Respuestas (<?= count($data['respuestas']) ?>)</h3>

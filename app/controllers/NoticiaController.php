@@ -52,4 +52,27 @@ class NoticiaController extends Controller {
 
         $this->view('noticias/crear');
     }
+
+    public function editar($id){
+        $this->requireAuth();
+        if($_SESSION['usuario_rol'] != 'administrador') { $this->redirect('noticia'); }
+
+        $noticiaModel = $this->model('Noticia');
+        $noticia = $noticiaModel->obtenerPorId($id);
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $noticiaModel->actualizar($id, $_POST['titulo'], $_POST['contenido'], $_POST['tipo']);
+            $this->redirect('noticia/detalle/' . $id);
+        }
+        $this->view('noticias/editar', ['noticia' => $noticia]);
+    }
+
+    public function eliminar($id){
+        $this->requireAuth();
+        if($_SESSION['usuario_rol'] == 'administrador') {
+            $noticiaModel = $this->model('Noticia');
+            $noticiaModel->eliminar($id);
+        }
+        $this->redirect('noticia');
+    }
 }

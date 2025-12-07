@@ -50,6 +50,14 @@
             <strong>Inicio:</strong> <?= date('d/m/Y', strtotime($data['proyecto']->fecha_inicio)) ?>
         </div>
     </div>
+    <!-- SOLO EL DUEÑO VE ESTO -->
+    <?php if(isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $data['proyecto']->usuario_creador_id): ?>
+        <hr>
+        <div style="text-align: right;">
+            <a href="<?= BASE_URL ?>proyecto/editar/<?= $data['proyecto']->id_proyecto ?>" style="margin-right:15px; color:#d35400;">✎ Editar</a>
+            <a href="<?= BASE_URL ?>proyecto/eliminar/<?= $data['proyecto']->id_proyecto ?>" onclick="return confirm('¿Borrar proyecto?');" style="color:red;">🗑 Eliminar</a>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?php require_once APPROOT . '/views/layouts/footer.php'; ?>

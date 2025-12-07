@@ -42,13 +42,13 @@ class Idea {
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    // 3. Obtener miembros del equipo
     public function obtenerMiembros($id_idea){
-        $sql = "SELECT u.id_usuario, u.nombre_completo, u.foto_perfil, c.nombre as carrera, u.correo_electronico
+        // Agregamos u.telefono a la consulta
+        $sql = "SELECT u.id_usuario, u.nombre_completo, u.telefono, c.nombre as carrera
                 FROM idea_miembros im
                 JOIN usuarios u ON im.usuario_id = u.id_usuario
                 LEFT JOIN carreras c ON u.carrera_id = c.id_carrera
-                WHERE im.idea_id = :id AND im.estado_solicitud = 'aceptado'"; // SOLO ACEPTADOS
+                WHERE im.idea_id = :id AND im.estado_solicitud = 'aceptado'";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id_idea);
         $stmt->execute();
@@ -190,7 +190,7 @@ class Idea {
 
     // 4. Obtener comentarios de una idea
     public function obtenerComentarios($id_idea){
-        $sql = "SELECT c.*, u.nombre_completo, u.foto_perfil, u.rol
+        $sql = "SELECT c.*, u.nombre_completo, u.rol
                 FROM idea_comentarios c
                 JOIN usuarios u ON c.usuario_id = u.id_usuario
                 WHERE c.idea_id = :id
@@ -208,6 +208,24 @@ class Idea {
         $stmt->bindValue(':id', $id_idea);
         $stmt->bindValue(':uid', $id_usuario);
         $stmt->bindValue(':com', $comentario);
+        return $stmt->execute();
+    }
+
+    // Actualizar una idea existente
+    public function actualizar($datos){
+        $sql = "UPDATE ideas SET titulo = :tit, descripcion = :desc WHERE id_idea = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':tit', $datos['titulo']);
+        $stmt->bindValue(':desc', $datos['descripcion']);
+        $stmt->bindValue(':id', $datos['id']);
+        return $stmt->execute();
+    }
+
+    // Eliminar una idea (físicamente)
+    public function eliminar($id){
+        $sql = "DELETE FROM ideas WHERE id_idea = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id);
         return $stmt->execute();
     }
 }

@@ -51,7 +51,39 @@
                 </span>
             </div>
         </div>
+
     </div>
+
+    <!-- CENTRO DE NOTIFICACIONES -->
+<div class="card" style="margin-top: 20px; border-left: 5px solid #ffc107;">
+    <h3>🔔 Actividad Reciente</h3>
+    
+    <?php if(empty($data['notificaciones'])): ?>
+        <p style="color: #999;">No tienes notificaciones nuevas.</p>
+    <?php else: ?>
+        <ul style="list-style: none;">
+            <?php foreach($data['notificaciones'] as $noti): ?>
+                
+                <!-- Si no está leída, le ponemos fondo amarillito -->
+                <li style="padding: 10px; border-bottom: 1px solid #eee; <?= $noti->leida == 0 ? 'background: #fffbf2; font-weight:bold;' : '' ?>">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        
+                        <!-- Mensaje -->
+                        <span><?= $noti->mensaje ?></span>
+                        
+                        <!-- Botón para ver (Marca como leída) -->
+                        <a href="<?= BASE_URL ?>perfil/leer/<?= $noti->id_notificacion ?>" class="btn" style="font-size: 0.8rem; padding: 5px 10px; border: 1px solid #ddd;">
+                            Ver &rarr;
+                        </a>
+
+                    </div>
+                    <small style="color: #999; font-weight: normal;"><?= date('d/m/Y H:i', strtotime($noti->fecha_creacion)) ?></small>
+                </li>
+
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
 
     <!-- 2. ESTADÍSTICAS (GRID) -->
     <div class="dashboard-grid" style="margin-top: -20px; position: relative; z-index: 10;">
@@ -91,6 +123,12 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+                    <!-- Dentro del formulario de editar perfil -->
+                    <div class="form-group">
+                        <label>Número de Celular (WhatsApp)</label>
+                        <input type="text" name="telefono" value="<?= $data['usuario']->telefono ?>" placeholder="Ej: 952123456">
+                        <small style="color: #888;">Solo será visible para el líder del equipo si te unes a una idea.</small>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>

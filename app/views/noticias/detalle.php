@@ -24,12 +24,13 @@
             <?= nl2br($data['noticia']->contenido) ?>
         </div>
 
-        <div style="margin-top: 50px; text-align: center;">
-            <p style="font-weight: bold;">Comparte esta noticia:</p>
-            <!-- Botones falsos de compartir para decoración -->
-            <button class="btn" style="background: #983b3bff; color: white;">Facebook</button>
-            <button class="btn" style="background: #d32525ff; color: white;">WhatsApp</button>
+        <?php if(isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] == 'administrador'): ?>
+        <hr>
+        <div style="text-align: right;">
+            <a href="<?= BASE_URL ?>noticia/editar/<?= $data['noticia']->id_noticia ?>" class="btn" style="background:#f39c12; color:white; font-size:0.8rem;">Editar</a>
+            <a href="<?= BASE_URL ?>noticia/eliminar/<?= $data['noticia']->id_noticia ?>" onclick="return confirm('¿Borrar noticia?');" class="btn" style="background:red; color:white; font-size:0.8rem;">Eliminar</a>
         </div>
+    <?php endif; ?>
 
     </div>
 </div>

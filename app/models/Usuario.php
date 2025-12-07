@@ -59,12 +59,13 @@ class Usuario {
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    // 2. Actualizar datos básicos
-    public function actualizarDatos($id, $nombre, $carrera_id){
-        $sql = "UPDATE usuarios SET nombre_completo = :nom, carrera_id = :cid WHERE id_usuario = :id";
+    // Actualizar datos básicos (Nombre, Carrera y Teléfono)
+    public function actualizarDatos($id, $nombre, $carrera_id, $telefono){
+        $sql = "UPDATE usuarios SET nombre_completo = :nom, carrera_id = :cid, telefono = :tel WHERE id_usuario = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':nom', $nombre);
         $stmt->bindValue(':cid', $carrera_id);
+        $stmt->bindValue(':tel', $telefono); // Nuevo campo
         $stmt->bindValue(':id', $id);
         return $stmt->execute();
     }

@@ -50,12 +50,23 @@ class IdeaController extends Controller {
 
     //Acción de unirse
     public function unirse($id){
-        $this->requireAuth(); // Solo logueados
-        
+        $this->requireAuth();
         $ideaModel = $this->model('Idea');
-        $ideaModel->unirse($id, $_SESSION['usuario_id']);
         
-        // Recargar la página del detalle
+        // 1. Unirse
+        $ideaModel->unirse($id, $_SESSION['usuario_id']);
+
+        // 2. CREAR NOTIFICACIÓN (NUEVO)
+        // Obtenemos la idea para saber quién es el dueño
+        $idea = $ideaModel->obtenerPorId($id);
+        
+        $notiModel = $this->model('Notificacion'); // Necesitas cargar este modelo
+        $mensaje = $_SESSION['usuario_nombre'] . " quiere unirse a tu idea: " . substr($idea->titulo, 0, 20) . "...";
+        $enlace = "idea/detalle/" . $id;
+        
+        // Le avisamos al Creador de la idea
+        $notiModel->crear($idea->usuario_creador_id, $mensaje, $enlace);
+
         $this->redirect('idea/detalle/' . $id);
     }
 
@@ -174,4 +185,47 @@ class IdeaController extends Controller {
         }
         $this->redirect('idea/detalle/' . $id_idea);
     }
+
+    public function editar($id){
+        $this->requireAuth();
+        $ideaModel = $this->model('Idea');
+        $idea = $ideaModel->obtenerPorId($id);
+
+        // Seguridad: Solo el dueño puede editar
+        if($idea->usuario_creador_id != $_SESSION['usuario_id']){
+            $this->redirect('idea');
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $datos = [
+                'id' => $id,
+                'titulo' => trim($_POST['titulo']),
+                'descripcion' => trim($_POST['descripcion'])
+            ];
+            if($ideaModel->actualizar($datos)){
+                $this->redirect('idea/detalle/' . $id);
+            }
+        }
+
+        $this->view('ideas/editar', ['idea' => $idea]);
+    }
+
+    public function eliminar($id){
+        $this->requireAuth();
+        $ideaModel = $this->model('Idea');
+        $idea = $ideaModel->obtenerPorId($id);
+
+        // Seguridad: Solo el dueño puede eliminar
+        if($idea->usuario_creador_id != $_SESSION['usuario_id']){
+            $this->redirect('idea');
+            return;
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $ideaModel->eliminar($id);
+            $this->redirect('idea');
+        }
+    }
+
+    
 }
